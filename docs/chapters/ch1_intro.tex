@@ -1,0 +1,36 @@
+%! TEX root = ../main.tex
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{Background and Motivation}
+Deep Neural Networks (DNNs) have become central to perception systems in Advanced Driver Assistance Systems (ADAS) and Autonomous Vehicles (AVs). Modern object detectors and segmentation pipelines achieve high accuracy on benchmark evaluations under nominal driving conditions. However, when deployed in dynamic, open-world operational design domains (ODDs), deep models exhibit high epistemic confidence even when processing inputs that deviate substantially from their training distributions.
+
+In safety-critical automotive contexts, classical Functional Safety (ISO 26262) primarily addresses systematic software bugs and hardware faults. In contrast, deep vision systems encounter hazardous behaviors in the absence of system faults, driven instead by algorithmic performance limitations and environmental disturbances. This class of risk is governed by \textbf{ISO 21448: Safety of the Intended Functionality (SOTIF)}. Under SOTIF principles, reducing hazardous scenarios requires actively detecting when perception inputs shift beyond known operational bounds.
+
+\section{Problem Statement}
+Real-world distribution shift in autonomous driving manifests along two distinct axes:
+\begin{enumerate}
+    \item \textbf{Semantic Shift (Out-of-Distribution / Epistemic Risk):} Novel obstacle classes, non-standard road configurations, or dropped debris not represented in the training set.
+    \item \textbf{Covariate Shift (Sensor Degradation / Environmental Risk):} Adverse weather phenomena (dense fog, heavy rain, snow) and optical corruptions (defocus blur, low-light sensor noise).
+\end{enumerate}
+
+Existing out-of-distribution (OOD) monitoring frameworks typically rely on monolithic feature representations extracted from a deep backbone. This creates the \textbf{Feature Contamination Dilemma}: environmental covariate noise alters high-dimensional feature representations, causing distance-based OOD detectors to trigger false-positive semantic obstacle alerts on completely clear roads. Conversely, localized semantic anomalies can contaminate weather degradation estimators. 
+
+\section{Research Objectives}
+To address these challenges, this dissertation pursues the following technical objectives:
+\begin{itemize}
+    \item \textbf{Decoupled Feature Representation:} Formulate an architecture that extracts intermediate latent embeddings from a frozen ResNet-50 backbone while separating semantic features from environmental noise.
+    \item \textbf{Head A (Semantic OOD Supervisor):} Implement a Variational Autoencoder (VAE) coupled with latent-space Mahalanobis distance scoring, trained exclusively on nominal daytime clear driving scenes from BDD100K to quantify epistemic uncertainty.
+    \item \textbf{Head B (Covariate Shift Regressor):} Construct a multi-task continuous regressor trained on parameterized visual corruptions (ImageNet-C formulation) to estimate visibility degradation ($\hat{\alpha}_{\text{fog}}$, $\hat{\beta}_{\text{rain}}$, $\hat{\gamma}_{\text{blur}}$).
+    \item \textbf{SOTIF Risk Engine:} Synthesize outputs from both heads into a deterministic safety supervisor that transitions between normal trust, sensor warning, and safe-stop handovers within a 100~ms budget.
+\end{itemize}
+
+\section{Dissertation Organization}
+The remainder of this dissertation is organized as follows:
+\begin{itemize}
+    \item \textbf{Chapter~\ref{ch:literature_review}:} Reviews mathematical foundations of generalized OOD taxonomy, Mahalanobis distance metrics, and common corruption benchmarks.
+    \item \textbf{Chapter 3 (System Architecture):} Details the decoupled dual-head framework and latent projection mechanics.
+    \item \textbf{Chapter 4 (Experimental Methodology):} Describes BDD100K data partitioning, DVC pipelines, and hyperparameter tracking.
+    \item \textbf{Chapter 5 (Results and SOTIF Analysis):} Reports AUROC, FPR@95, and runtime profiling against automotive safety criteria.
+    \item \textbf{Chapter 6 (Conclusion and Future Scope):} Summarizes key findings and outlines embedded hardware deployment pathways.
+\end{itemize}

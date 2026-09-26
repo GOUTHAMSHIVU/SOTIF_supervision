@@ -1,0 +1,74 @@
+\documentclass[12pt, a4paper, oneside]{report}
+
+% --- Essential Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{cite}                     % Formats IEEE citations like [1], [2]
+\usepackage[hidelinks]{hyperref}      % Clickable references without ugly borders
+
+\setstretch{1.5}                      % Standard 1.5 line spacing
+
+% --- Metadata ---
+\newcommand{\myTitle}{Dual-Head SOTIF Perception Supervisor for Autonomous Driving}
+\newcommand{\myName}{Goutham S}
+\newcommand{\myDegree}{Master of Technology in Artificial Intelligence and Machine Learning}
+\newcommand{\mySupervisor}{Dissertation Supervisor}
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+% Front Matter
+% ------------------------------------------------------------------------------
+\pagenumbering{roman}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.5cm}
+        {\LARGE \textbf{\MakeUppercase{\myTitle}}\par}
+        \vspace{2cm}
+        {\large A Dissertation Report submitted in partial fulfillment of the requirements for}\par
+        \vspace{0.3cm}
+        {\large \textbf{\myDegree}}\par
+        \vspace{1.5cm}
+        {\large By}\par
+        \vspace{0.3cm}
+        {\large \textbf{\myName}}\par
+        \vfill
+        {\large \textbf{BIRLA INSTITUTE OF TECHNOLOGY \& SCIENCE, PILANI}}\par
+        {\large \today}\par
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+% ------------------------------------------------------------------------------
+% Main Body Chapters
+% ------------------------------------------------------------------------------
+\pagenumbering{arabic}
+% ==============================================================================
+% MAIN CONTENT
+% ==============================================================================
+\newpage
+\pagenumbering{arabic}
+
+\input{chapters/ch1_intro.tex}
+\include{chapters/ch2_litreview}
+% \include{chapters/ch3_design}
+
+% ------------------------------------------------------------------------------
+% Bibliography Link
+% ------------------------------------------------------------------------------
+\clearpage
+\nocite{*}
+\bibliographystyle{IEEEtran}
+% Points to docs/references.bib (do NOT add the .bib extension here)
+\bibliography{references}
+
+\end{document}

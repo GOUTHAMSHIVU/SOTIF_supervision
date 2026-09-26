@@ -3,7 +3,7 @@
 # ==============================================================================
 
 project:
-  name: "SOTIF_supervision
+  name: "SOTIF_supervision"
   version: "1.0.0"
   seed: 42
 

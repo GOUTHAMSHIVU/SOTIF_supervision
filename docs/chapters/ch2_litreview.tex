@@ -1,0 +1,43 @@
+%! TEX root = ../main.tex
+\chapter{Literature Review}
+\label{ch:literature_review}
+
+\section{Taxonomy of Distribution Shifts in Autonomous Driving}
+Deep neural networks deployed in automated driving frequently face environmental 
+and semantic conditions not represented in their nominal training distributions. 
+As systematized by Yang et al.~\cite{yang2021generalized}, distribution shift is not 
+a monolithic phenomenon; it decomposes fundamentally into two distinct axes:
+\begin{enumerate}
+    \item \textbf{Semantic Shift ($P(Y)$ shift):} Encounters with novel, unseen obstacle 
+    classes, geometries, or road configurations.
+    \item \textbf{Covariate Shift ($P(X)$ shift with invariant $P(Y|X)$):} Changes in the 
+    environmental style, illumination, or sensor fidelity (e.g., dense fog, rain, or lens flare).
+\end{enumerate}
+
+Traditional Out-of-Distribution (OOD) monitoring models fail under real-world operational 
+conditions because environmental covariate noise routinely triggers false-positive semantic 
+alarms, directly violating the operational boundaries outlined in ISO 21448 (SOTIF)~\cite{iso21448}.
+
+\section{Feature-Space Uncertainty and Distance Metrics}
+To detect open-set semantic anomalies without retraining complex backbones, early techniques 
+relied on post-softmax probabilities. However, as demonstrated by Lee et al.~\cite{lee2018simple}, 
+softmax scoring suffers from severe overconfidence on anomalous inputs. 
+
+To overcome this, Lee et al. proposed modeling class-conditional Gaussian distributions over 
+intermediate latent representations $f(x)$ using Gaussian Discriminant Analysis (GDA). 
+For an extracted feature embedding, the anomaly score is computed via the Mahalanobis distance:
+\begin{equation}
+    M(x) = \min_c \sqrt{(f(x) - \mu_c)^T \Sigma^{-1} (f(x) - \mu_c)}
+    \label{eq:mahalanobis}
+\end{equation}
+where $\mu_c$ represents the empirical centroid of class $c$, and $\Sigma$ is the tied covariance 
+matrix calculated across nominal training distributions.
+
+\section{Benchmarking Common Environmental Corruptions}
+While Mahalanobis distance quantifies epistemic uncertainty, it remains susceptible to 
+feature corruption caused by environmental degradation. To systematically quantify covariate 
+shift, Hendrycks and Dietterich~\cite{hendrycks2019benchmarking} established an algorithmic 
+benchmark consisting of 15 parameterized corruption functions spanning weather, blur, and noise. 
+
+Our perception supervisor leverages these mathematical formulations to train a dedicated 
+regression head directly on diverse driving scenes extracted from the BDD100K dataset~\cite{yu2020bdd100k}.
