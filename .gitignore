@@ -1,0 +1,84 @@
+# ==============================================================================
+# 1. Environment & Local Secrets
+# ==============================================================================
+.env
+.env.local
+*.env
+venv/
+.venv/
+env/
+conda/
+
+# ==============================================================================
+# 2. Python Caching & Compilation Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+
+# ==============================================================================
+# 3. Data & Storage (Raw data in D: drive or symlinked)
+# ==============================================================================
+# Ignore the symlinked data directory contents by default
+/data/raw/
+/data/interim/
+
+# Ignore heavy dataset formats
+*.h5
+*.hdf5
+*.tar
+*.tar.gz
+*.zip
+*.parquet
+*.feather
+*.pkl
+
+# Explicitly ensure DVC pointer files and their directory stubs ARE tracked
+!*.dvc
+!.dvc/
+!data/processed/.gitkeep
+
+# ==============================================================================
+# 4. Model Weights & Binary Checkpoints (Heavy Artifacts)
+# ==============================================================================
+*.pt
+*.pth
+*.onnx
+*.engine
+*.plan
+*.bin
+checkpoints/
+weights/
+
+# ==============================================================================
+# 5. Experiment Tracking & Logs (MLflow, TensorBoard, WandB)
+# ==============================================================================
+mlruns/
+mlartifacts/
+*.db
+*.sqlite
+wandb/
+runs/
+lightning_logs/
+*.log
+
+# ==============================================================================
+# 6. IDEs & Operating System Artifacts
+# ==============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================================================================
+# 7. Jupyter Notebook Checkpoints
+# ==============================================================================
+.ipynb_checkpoints/
+*-checkpoint.ipynb
