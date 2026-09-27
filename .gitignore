@@ -26,6 +26,7 @@ dist/
 # Ignore the symlinked data directory contents by default
 /data/raw/
 /data/interim/
+data/features/*.h5
 
 # Ignore heavy dataset formats
 *.h5

@@ -1,0 +1,1 @@
+ADR #TitleDateStatus0001Use ADRs for Architecture Decisions2026-09-27Accepted0002Decouple Supervisor via Frozen ResNet-502026-09-27Accepted0003Offline HDF5 Feature Caching (FP32)2026-09-27Accepted0004Retain FP32 Precision for Mahalanobis in QAT2026-09-27Accepted
