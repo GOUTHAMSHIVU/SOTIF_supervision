@@ -2,7 +2,7 @@
 from pathlib import Path
 import h5py
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, Subset
 from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
@@ -24,7 +24,7 @@ class A2D2ImageFolder(Dataset):
             image = self.transform(image)
         return image, str(img_path.name)
 
-def run_extraction(data_dir: str, output_h5: str, batch_size: int = 64, num_workers: int = 4):
+def run_extraction(data_dir: str, output_h5: str, batch_size: int = 64, num_workers: int = 4, limit: int = None):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[INFO] Using compute device: {device}")
 
@@ -42,6 +42,12 @@ def run_extraction(data_dir: str, output_h5: str, batch_size: int = 64, num_work
 
     if total_samples == 0:
         raise RuntimeError("No .png files found. Verify the data download path.")
+
+    # Slice dataset if a limit is provided for sanity checks
+    if limit is not None and limit > 0:
+        actual_limit = min(limit, total_samples)
+        dataset = Subset(dataset, range(actual_limit))
+        print(f"[INFO] Dry run enabled: processing only first {actual_limit} frames.")
 
     loader = DataLoader(
         dataset, 
@@ -84,11 +90,11 @@ def run_extraction(data_dir: str, output_h5: str, batch_size: int = 64, num_work
     print(f"[SUCCESS] Features saved to: {output_h5} ({Path(output_h5).stat().st_size / (1024**2):.2f} MB)")
 
         # At the end of run_extraction(...) in src/data/extract_features.py:
-    from src.utils.manifest import write_artifact_manifest
+    from utils.manifest import write_artifact_manifest
 
     # ... existing HDF5 writing finishes here ...
 
-    manifest_path = "data/metadata/nominal_train_manifest.json"
+    manifest_path = "data/metadata/nominal_train_manifest_post.json"
     write_artifact_manifest(
         h5_path=output_h5,
         raw_data_dir=data_dir,
