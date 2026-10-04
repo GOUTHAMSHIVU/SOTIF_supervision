@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 
-class SemanticOODSupervisor(nn.Module):
+class BetaVAE(nn.Module):
+    """Head A: Unsupervised Beta-VAE for latent manifold anomaly detection."""
     def __init__(self, in_features: int = 2048, latent_dim: int = 32):
         super().__init__()
         

@@ -14,18 +14,18 @@ project:
 
 storage:
   # Base directory on external disk
-  root: "${oc.env:STORAGE_ROOT, D:/SOTIF_supervision_workspace}"
+  root: "${oc.env:STORAGE_ROOT,D:/SOTIF_supervision_workspace}"
   
   # Data directories
   data_dir: "${storage.root}/data"
   raw_dir: "${storage.data_dir}/raw"
-  processed_dir: "${storage.data_dir}/processed"
+  features_dir: "${storage.root}/features"
   
   # Precomputed HDF5 Feature Files
   features:
-    nominal_h5: "${storage.processed_dir}/features_nominal.h5"
-    ood_h5: "${storage.processed_dir}/features_ood.h5"
-    weather_h5: "${storage.processed_dir}/features_weather.h5"
+    feature_h5: "${storage.features_dir}/train_features.h5"
+    # ood_h5: "${storage.features_dir}/features_ood.h5"
+    # weather_h5: "${storage.features_dir}/features_weather.h5"
     
   # Checkpoints and Trained Model Weights
   models_dir: "${storage.root}/models"
@@ -34,6 +34,7 @@ storage:
   
   # MLflow & Experiment Tracking on External Drive
   mlflow:
+    tracking: true
     tracking_uri: "sqlite:///${storage.root}/mlflow.db"
     artifact_root: "${storage.root}/mlflow_artifacts"
     experiment_name: "SOTIF_Supervisors"
@@ -43,6 +44,6 @@ storage:
 # ------------------------------------------------------------------------------
 compute:
   device: "cuda"          # "cuda" or "cpu"
-  num_workers: 4
+  num_workers: 0          # Note: Keep 0 on Windows for HDF5 multiprocessing safety
   pin_memory: true
-  fp16_enabled: true
+  fp16_enabled: false     # VAE loss stability is better in fp32

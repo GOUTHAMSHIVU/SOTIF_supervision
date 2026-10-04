@@ -1,0 +1,29 @@
+# ==============================================================================
+# Head A Configuration: Unsupervised Beta-VAE Latent Manifold Supervisor
+# ==============================================================================
+
+experiment:
+  sub_experiment: "perception_ood"
+  run_name: "head_a_beta_vae"
+
+model:
+  name: "BetaVAE"
+  input_dim: 2048
+  latent_dim: 32
+  hidden_dims: [512, 128]
+
+training:
+  epochs: 50
+  batch_size: 128
+  lr: 0.001
+  weight_decay: 1.0e-5
+  beta: 1.0
+  val_split: 0.1
+  patience: 5
+
+  # Diagnostic & Latent Evaluation Settings
+diagnostics:
+  batch_size: 256
+  variance_threshold: 0.01
+  checkpoint_path: "${storage.models_dir}/head_a_best.pt"
+  output_dir: "${storage.root}/diagnostics/head_a_beta1.0"
