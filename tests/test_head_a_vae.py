@@ -1,11 +1,11 @@
 # tests/test_head_a_vae.py
 import torch
 import torch.nn.functional as F
-from src.models.head_a_vae import SemanticOODSupervisor
+from src.models.head_a_vae import BetaVAE
 
 def test_head_a_shapes(dummy_feature_vectors):
     latent_dim = 32
-    model = SemanticOODSupervisor(in_features=2048, latent_dim=latent_dim)
+    model = BetaVAE(in_features=2048, latent_dim=latent_dim)
     model.train()
     
     x_recon, mu, logvar, z = model(dummy_feature_vectors)
@@ -16,7 +16,7 @@ def test_head_a_shapes(dummy_feature_vectors):
     assert z.shape == (16, latent_dim)
 
 def test_head_a_gradient_backprop(dummy_feature_vectors):
-    model = SemanticOODSupervisor(in_features=2048, latent_dim=32)
+    model = BetaVAE(in_features=2048, latent_dim=32)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     
     x_recon, mu, logvar, _ = model(dummy_feature_vectors)
