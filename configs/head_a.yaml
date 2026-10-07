@@ -27,3 +27,40 @@ diagnostics:
   variance_threshold: 0.01
   checkpoint_path: "${storage.models_dir}/head_a_best.pt"
   output_dir: "${storage.root}/diagnostics/head_a_beta1.0"
+
+# ==============================================================================
+# Evaluation & Dataset Preprocessing Configuration
+# ==============================================================================
+
+evaluation:
+  target_beta: 0.0001
+  calibrated_params: "${storage.root}/mahalanobis_params.npz"
+  
+  # Temporal filter configuration
+  temporal:
+    window_size: 5
+    reset_on_scene_change: true
+
+# Dataset-specific visual conditioning profiles
+datasets:
+  dataset_ObstacleTrack:
+    type: "out_of_distribution"
+    requires_cleanup: false  # Camera has clean view, no hood intrusion
+    roi_crop:
+      enabled: false
+      top_ratio: 0.0
+      bottom_ratio: 1.0
+  dashcam_highway:
+    requires_cleanup: true
+    roi_crop:
+      enabled: true
+      top_ratio: 0.15     # Cuts upper sky/sun glare
+      bottom_ratio: 0.62  # Cuts right above the red hood & dashboard (removes bottom 38%)
+
+  #dashcam_raw:
+  #  type: "wild_test"
+  #  requires_cleanup: true
+  #  roi_crop:
+  #    enabled: true
+  #    top_ratio: 0.15     # Top dashcam banner/GPS speed
+  #    bottom_ratio: 0.80  # Vehicle hood
