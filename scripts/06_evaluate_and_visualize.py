@@ -127,7 +127,8 @@ class VisualSOTIFEvaluator:
         filt_dm = float(np.mean(self.dm_buffer))
 
         # 5. SOTIF Gate: Check for Out-of-Distribution Hazard
-        is_hazard = (filt_mse > self.mse_th) or (filt_dm > self.dm_th)
+        # is_hazard = (filt_mse > self.mse_th) or (filt_dm > self.dm_th)
+        is_hazard = (filt_mse > self.mse_th) and (filt_dm > self.dm_th)
 
         # 6. Grad-CAM Spatial Attribution Heatmap
         recon_loss.backward()
